@@ -1,0 +1,18 @@
+@import '../../styles/mixins.scss';
+
+#core-layout {
+  min-height: 100vh;
+  #app-header-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: getSize(200);
+    .logo {
+      height: getSize(1000);
+    }
+    .title {
+      margin: 0;
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "name": "outlook-patch",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "prettier": "prettier --check src/**/*.{js,jsx,ts,tsx}",
+    "preview": "vite preview",
+    "typescript-check": "tsc --pretty --noEmit",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^5.3.6",
+    "@azure/msal-browser": "^3.11.1",
+    "@azure/msal-react": "^2.0.14",
+    "@microsoft/microsoft-graph-client": "^3.0.7",
+    "antd": "^5.16.0",
+    "date-fns": "^3.6.0",
+    "react": "^18.2.0",
+    "react-beautiful-dnd": "^13.1.1",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.22.3"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.2.0",
+    "@microsoft/microsoft-graph-types": "^2.40.0",
+    "@types/react": "^18.2.66",
+    "@types/react-beautiful-dnd": "^13.1.8",
+    "@types/react-dom": "^18.2.22",
+    "@typescript-eslint/eslint-plugin": "^7.2.0",
+    "@typescript-eslint/parser": "^7.2.0",
+    "@vitejs/plugin-react-swc": "^3.5.0",
+    "eslint": "^8.57.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^18.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-jsx-a11y": "^6.8.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "eslint-plugin-react": "^7.34.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.6",
+    "husky": "^9.0.11",
+    "prettier": "^3.2.5",
+    "sass": "^1.72.0",
+    "typescript": "^5.2.2",
+    "vite": "^5.2.0"
+  }
+}
