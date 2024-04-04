@@ -1,0 +1,73 @@
+name: Test, Build and Publish
+
+on: [push]
+
+jobs:
+  test-and-lint:
+    name: Test and Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        id: setup-node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: pnpm
+
+      - name: Install Dependencies
+        id: pnpm-ci
+        run: pnpm install
+
+      - name: Validate current commit (last commit) with commitlint
+        id: commitlint-push
+        run: npx commitlint --last --verbose
+
+      - name: Check Format
+        id: pnpm-format
+        run: pnpm run prettier:fix
+
+      - name: Lint
+        id: pnpm-lint
+        run: pnpm run lint
+
+      - name: TypeScript Check
+        id: typescript-check
+        run: pnpm run typescript-check
+
+  build-and-publish:
+    name: Build and Publish
+    needs: test-and-lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        id: setup-node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: pnpm
+
+      - name: Install Dependencies
+        id: pnpm-ci
+        run: pnpm install
+
+      - name: Build
+        id: build
+        run: pnpm run build
+
+      - name: Publish
+        id: publish
+        run: pnpm run semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
