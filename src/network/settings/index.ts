@@ -1,4 +1,4 @@
-import { MessageRule } from '@microsoft/microsoft-graph-types'
+import { MailFolder, MessageRule } from '@microsoft/microsoft-graph-types'
 import { Client } from '@microsoft/microsoft-graph-client'
 
 export class SettingsResource {
@@ -44,5 +44,18 @@ export class SettingsResource {
     return await client
       .api(`/me/mailFolders/${folder}/messageRules/${id}`)
       .patch(data)
+  }
+
+  static async getFolderList(client: Client): Promise<MailFolder[]> {
+    const ruleList: MailFolder[] = (await client.api('/me/mailFolders').get())
+      .value
+    return ruleList
+  }
+
+  static async getChildFolders(
+    client: Client,
+    id: string
+  ): Promise<MailFolder[]> {
+    return (await client.api(`/me/mailFolders/${id}/childFolders`).get()).value
   }
 }

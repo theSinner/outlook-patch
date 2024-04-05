@@ -8,7 +8,7 @@ import {
 import { Typography, Button, Modal, message } from 'antd'
 import { UploadOutlined, DownloadOutlined } from '@ant-design/icons'
 import { MessageRule } from '@microsoft/microsoft-graph-types'
-import { AppContext } from '../../contexts/app/context'
+import { AppContext, MailContext } from '../../contexts'
 import { SettingsResource } from '../../network'
 import { StrictModeDroppable } from '../../components'
 import { RuleItem, UploadForm } from './components'
@@ -23,6 +23,7 @@ export default function Rules() {
   const [isExporting, setIsExporting] = useState<boolean>(false)
   const [rules, setRules] = useState<MessageRule[]>()
   const { client } = useContext(AppContext)
+  const mainContext = useContext(MailContext)
 
   const getData = () => {
     if (client) {
@@ -69,9 +70,10 @@ export default function Rules() {
     setIsExporting(true)
     SettingsResource.exportRules(client)
       .then((data) => {
-        exportRules(data)
+        exportRules(data, mainContext)
       })
-      .catch(() => {
+      .catch((error) => {
+        throw error
         message.error('Failed to export rules')
       })
       .finally(() => {
