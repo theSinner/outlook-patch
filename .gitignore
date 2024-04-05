@@ -72,5 +72,5 @@ sketch
 *.scss.map
 
 dist
-
+.vite
 # End of https://www.toptal.com/developers/gitignore/api/macos,react,linux,sass
