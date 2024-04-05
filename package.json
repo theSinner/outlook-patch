@@ -11,6 +11,7 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "prettier": "prettier --check src/**/*.{js,jsx,ts,tsx}",
+    "prettier:fix": "prettier --write src/**/*.{js,jsx,ts,tsx}",
     "preview": "vite preview",
     "typescript-check": "tsc --pretty --noEmit",
     "semantic-release": "semantic-release --no-ci",
@@ -31,6 +32,7 @@
   "devDependencies": {
     "@commitlint/cli": "^19.2.0",
     "@microsoft/microsoft-graph-types": "^2.40.0",
+    "@qiwi/semantic-release-gh-pages-plugin": "^5.2.12",
     "@types/react": "^18.2.66",
     "@types/react-beautiful-dnd": "^13.1.8",
     "@types/react-dom": "^18.2.22",
@@ -51,7 +53,6 @@
     "prettier": "^3.2.5",
     "sass": "^1.72.0",
     "typescript": "^5.2.2",
-    "semantic-release": "^23.0.5",
     "vite": "^5.2.0"
   }
 }
