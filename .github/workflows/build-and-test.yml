@@ -17,27 +17,27 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
-          cache: pnpm
+          cache: npm
 
       - name: Install Dependencies
-        id: pnpm-ci
-        run: pnpm install
+        id: npm-ci
+        run: npm ci
 
       - name: Validate current commit (last commit) with commitlint
         id: commitlint-push
         run: npx commitlint --last --verbose
 
       - name: Check Format
-        id: pnpm-format
-        run: pnpm run prettier:fix
+        id: npm-format
+        run: npm run prettier:fix
 
       - name: Lint
-        id: pnpm-lint
-        run: pnpm run lint
+        id: npm-lint
+        run: npm run lint
 
       - name: TypeScript Check
         id: typescript-check
-        run: pnpm run typescript-check
+        run: npm run typescript-check
 
   build-and-publish:
     name: Build and Publish
@@ -54,19 +54,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
-          cache: pnpm
+          cache: npm
 
       - name: Install Dependencies
-        id: pnpm-ci
-        run: pnpm install
+        id: npm-ci
+        run: npm ci
 
       - name: Build
         id: build
-        run: pnpm run build
+        run: npm run build
 
       - name: Publish
         id: publish
-        run: pnpm run semantic-release
+        run: npm run semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
