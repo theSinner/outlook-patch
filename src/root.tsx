@@ -1,9 +1,9 @@
 import { MsalProvider } from '@azure/msal-react'
 import { IPublicClientApplication } from '@azure/msal-browser'
 import { BrowserRouter } from 'react-router-dom'
+import { ConfigProvider, App } from 'antd'
 import { AppProvider } from './contexts'
 import { Router } from './routes'
-import { ConfigProvider, App } from 'antd'
 
 type Props = {
   pca: IPublicClientApplication

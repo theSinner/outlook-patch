@@ -105,26 +105,26 @@ export default function Rules() {
       <div className="content-wrapper">
         <DragDropContext onDragEnd={onDragEnd}>
           <StrictModeDroppable droppableId="droppable">
-            {(provided) => (
+            {(droppableProvided) => (
               <div
                 className="list-wrapper"
-                {...provided.droppableProps}
-                ref={provided.innerRef}
+                {...droppableProvided.droppableProps}
+                ref={droppableProvided.innerRef}
               >
                 {rules?.map((rule, index) => (
                   <Draggable key={rule.id} draggableId={rule.id!} index={index}>
-                    {(provided) => (
+                    {(draggableProvided) => (
                       <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
+                        ref={draggableProvided.innerRef}
+                        {...draggableProvided.draggableProps}
+                        {...draggableProvided.dragHandleProps}
                       >
                         <RuleItem rule={rule} />
                       </div>
                     )}
                   </Draggable>
                 ))}
-                {provided.placeholder}
+                {droppableProvided.placeholder}
               </div>
             )}
           </StrictModeDroppable>

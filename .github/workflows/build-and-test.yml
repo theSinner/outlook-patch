@@ -1,0 +1,72 @@
+name: Test, Build and Publish
+
+on: [push]
+
+jobs:
+  test-and-lint:
+    name: Test and Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        id: setup-node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: npm
+
+      - name: Install Dependencies
+        id: npm-ci
+        run: npm ci
+
+      - name: Validate current commit (last commit) with commitlint
+        id: commitlint-push
+        run: npx commitlint --last --verbose
+
+      - name: Check Format
+        id: npm-format
+        run: npm run prettier
+
+      - name: Lint
+        id: npm-lint
+        run: npm run lint
+
+      - name: TypeScript Check
+        id: typescript-check
+        run: npm run typescript-check
+
+  build-and-publish:
+    name: Build and Publish
+    needs: test-and-lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        id: setup-node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: npm
+
+      - name: Install Dependencies
+        id: npm-ci
+        run: npm ci
+
+      - name: Build
+        id: build
+        run: npm run build
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        if: github.ref == 'refs/heads/main'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist

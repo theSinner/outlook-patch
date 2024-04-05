@@ -98,7 +98,7 @@ export default function UploadForm({ onClose, currentRules }: Props) {
       </Dragger>
       <div className="list-wrapper">
         {rules?.map((rule, index) => (
-          <RuleItem key={index} rule={rule} status={statusMap?.[index]} />
+          <RuleItem key={rule.id!} rule={rule} status={statusMap?.[index]} />
         ))}
       </div>
       <div className="footer-wrapper">
