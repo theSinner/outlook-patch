@@ -7,14 +7,14 @@ export function Router() {
   return (
     <CoreLayout>
       <Routes>
-        <Route path="/settings" >
+        <Route path="/settings">
           <Route path="mail">
             <Route path="rules" element={<Rules />} />
-            <Route index element={<Navigate to="rules" />}/>
+            <Route index element={<Navigate to="rules" />} />
           </Route>
-          <Route index element={<Navigate to="mail" />}/>
+          <Route index element={<Navigate to="mail" />} />
         </Route>
-        <Route index element={<Navigate to="/settings" />}/>
+        <Route index element={<Navigate to="/settings" />} />
       </Routes>
     </CoreLayout>
   )
