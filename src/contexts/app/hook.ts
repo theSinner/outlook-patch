@@ -39,13 +39,13 @@ export function useApp() {
         try {
           const account = msal.instance.getActiveAccount()
           if (account) {
-            const user = await UserResource.getUser(client)
+            const userData = await UserResource.getUser(client)
 
             setUser({
-              displayName: user.displayName || '',
-              email: user.mail || user.userPrincipalName || '',
-              timeFormat: user.mailboxSettings?.timeFormat || 'h:mm a',
-              timeZone: user.mailboxSettings?.timeZone || 'UTC',
+              displayName: userData.displayName || '',
+              email: userData.mail || userData.userPrincipalName || '',
+              timeFormat: userData.mailboxSettings?.timeFormat || 'h:mm a',
+              timeZone: userData.mailboxSettings?.timeZone || 'UTC',
             })
           }
         } catch (err: any) {
@@ -68,13 +68,13 @@ export function useApp() {
     }
 
     // Get the user from Microsoft Graph
-    const user = await UserResource.getUser(client)
+    const userData = await UserResource.getUser(client)
 
     setUser({
-      displayName: user.displayName || '',
-      email: user.mail || user.userPrincipalName || '',
-      timeFormat: user.mailboxSettings?.timeFormat || '',
-      timeZone: user.mailboxSettings?.timeZone || 'UTC',
+      displayName: userData.displayName || '',
+      email: userData.mail || userData.userPrincipalName || '',
+      timeFormat: userData.mailboxSettings?.timeFormat || '',
+      timeZone: userData.mailboxSettings?.timeZone || 'UTC',
     })
   }
 

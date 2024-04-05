@@ -4,14 +4,14 @@ import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-
 import { InteractionType, PublicClientApplication } from '@azure/msal-browser'
 import { AppConfig } from '../config'
 
-let graphClient: Client | undefined = undefined
+let graphClient: Client | undefined
 
 export function ensureClient(
   authProvider: AuthCodeMSALBrowserAuthenticationProvider
 ) {
   if (!graphClient) {
     graphClient = Client.initWithMiddleware({
-      authProvider: authProvider,
+      authProvider,
     })
   }
 

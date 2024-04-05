@@ -19,8 +19,8 @@ export interface AppContextData {
   error?: AppError
   signIn?: MouseEventHandler<HTMLElement>
   signOut?: MouseEventHandler<HTMLElement>
-  displayError?: Function
-  clearError?: Function
+  displayError?: (message: string, debug?: string) => void
+  clearError?: () => void
   client?: Client
   isLoading?: boolean
 }
