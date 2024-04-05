@@ -8,6 +8,17 @@ import { mergeWith, isArray } from 'lodash'
 import { HIERARCHY_SPLITTER } from '../../constants'
 import { getNameID } from '../../utils'
 
+export function exportJSON(data: Record<string, unknown>) {
+  const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
+    JSON.stringify(data)
+  )}`
+  const link = document.createElement('a')
+  link.href = jsonString
+  link.download = 'message-rules.json'
+
+  link.click()
+}
+
 export function reorder<T>(
   list: T[],
   startIndex: number,
@@ -106,15 +117,4 @@ export function exportRules(
     folders: foldersHierarchy,
     categories,
   })
-}
-
-export function exportJSON(data: Record<string, unknown>) {
-  const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
-    JSON.stringify(data)
-  )}`
-  const link = document.createElement('a')
-  link.href = jsonString
-  link.download = 'message-rules.json'
-
-  link.click()
 }

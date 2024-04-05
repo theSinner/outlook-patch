@@ -12,7 +12,7 @@ module.exports = {
     'plugin:react/jsx-runtime',
     'plugin:prettier/recommended',
   ],
-  ignorePatterns: ['dist', '.eslintrc.cjs'],
+  ignorePatterns: ['dist', '.eslintrc.cjs', 'vite.config.ts'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
@@ -20,10 +20,21 @@ module.exports = {
     project: ['./tsconfig.json', './tsconfig.node.json'],
     tsconfigRootDir: __dirname,
   },
-  plugins: ['react-refresh', 'react', 'react-hooks', '@typescript-eslint', 'prettier'],
+  plugins: [
+    'react-refresh',
+    'react',
+    'react-hooks',
+    '@typescript-eslint',
+    'prettier',
+  ],
   rules: {
     semi: 'off',
     '@typescript-eslint/semi': 0,
     'react/react-in-jsx-scope': 0,
+    'react/jsx-props-no-spreading': 0,
+    'import/prefer-default-export': 0,
+    '@typescript-eslint/no-explicit-any': 1,
+    'no-prototype-builtins': 0,
+    'prefer-promise-reject-errors': 0,
   },
 }

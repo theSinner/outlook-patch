@@ -4,24 +4,31 @@ import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-
 import { InteractionType, PublicClientApplication } from '@azure/msal-browser'
 import { AppConfig } from '../config'
 
-let graphClient: Client | undefined = undefined
+let graphClient: Client | undefined
 
-export function ensureClient(authProvider: AuthCodeMSALBrowserAuthenticationProvider) {
+export function ensureClient(
+  authProvider: AuthCodeMSALBrowserAuthenticationProvider
+) {
   if (!graphClient) {
     graphClient = Client.initWithMiddleware({
-      authProvider: authProvider,
+      authProvider,
     })
   }
 
   return graphClient
 }
 
-export function getAuthProvider(msal: IMsalContext): AuthCodeMSALBrowserAuthenticationProvider {
-  return new AuthCodeMSALBrowserAuthenticationProvider(msal.instance as PublicClientApplication, {
-    account: msal.instance.getActiveAccount()!,
-    scopes: AppConfig.scopes,
-    interactionType: InteractionType.Popup,
-  })
+export function getAuthProvider(
+  msal: IMsalContext
+): AuthCodeMSALBrowserAuthenticationProvider {
+  return new AuthCodeMSALBrowserAuthenticationProvider(
+    msal.instance as PublicClientApplication,
+    {
+      account: msal.instance.getActiveAccount()!,
+      scopes: AppConfig.scopes,
+      interactionType: InteractionType.Popup,
+    }
+  )
 }
 
 export function getClient(msal: IMsalContext): Client {

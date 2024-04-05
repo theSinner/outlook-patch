@@ -32,7 +32,7 @@ export class SettingsResource {
     data: MessageRule,
     folder: string = 'inbox'
   ): Promise<void> {
-    return await client.api(`/me/mailFolders/${folder}/messageRules`).post(data)
+    return client.api(`/me/mailFolders/${folder}/messageRules`).post(data)
   }
 
   static async updateRule(
@@ -41,7 +41,7 @@ export class SettingsResource {
     data: MessageRule,
     folder: string = 'inbox'
   ): Promise<void> {
-    return await client
+    return client
       .api(`/me/mailFolders/${folder}/messageRules/${id}`)
       .patch(data)
   }
