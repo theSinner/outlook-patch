@@ -21,8 +21,8 @@ export async function getChildFolders(
     }
     allFolders.push(extendedFolder)
     if (item.childFolderCount && item.childFolderCount > 0) {
-      const folders = await getChildFolders(client, item, hierarchy)
-      allFolders.push(...folders)
+      const children = await getChildFolders(client, item, hierarchy)
+      allFolders.push(...children)
     }
   }
   return allFolders

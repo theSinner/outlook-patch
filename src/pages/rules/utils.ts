@@ -1,10 +1,10 @@
 import { MessageRule } from '@microsoft/microsoft-graph-types'
+import { mergeWith, isArray } from 'lodash'
 import {
   MailContextData,
   MailFolderExtended,
   MailFolderExport,
 } from '../../contexts/mail/types'
-import { mergeWith, isArray } from 'lodash'
 import { HIERARCHY_SPLITTER } from '../../constants'
 import { getNameID } from '../../utils'
 
@@ -42,27 +42,27 @@ export function getFoldersHierarchy(
       id: folder.nameID,
       displayName: folder.displayName!,
     }
-  } else {
-    const folder = mailFoldersIDMap[mailFoldersNameMap[getNameID(nameIDs)]]
-    const parent = getFoldersHierarchy(
-      nameIDs.slice(0, 1),
-      mailFoldersNameMap,
-      mailFoldersIDMap
-    )
-    parent.children = [
-      {
-        id: folder.nameID,
-        displayName: folder.displayName!,
-      },
-    ]
-    return parent
   }
+  const folder = mailFoldersIDMap[mailFoldersNameMap[getNameID(nameIDs)]]
+  const parent = getFoldersHierarchy(
+    nameIDs.slice(0, 1),
+    mailFoldersNameMap,
+    mailFoldersIDMap
+  )
+  parent.children = [
+    {
+      id: folder.nameID,
+      displayName: folder.displayName!,
+    },
+  ]
+  return parent
 }
 
 function mergeCustomizer(objValue: unknown, srcValue: unknown) {
   if (isArray(objValue)) {
     return objValue.concat(srcValue)
   }
+  return undefined
 }
 
 export function exportRules(
@@ -71,7 +71,7 @@ export function exportRules(
 ) {
   const folderIds: string[] = []
   let categories: string[] = []
-  let foldersHierarchy: MailFolderExport[] = []
+  const foldersHierarchy: MailFolderExport[] = []
   for (const rule of rules) {
     delete rule.id
     if (rule.actions) {
