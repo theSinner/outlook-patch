@@ -1,7 +1,11 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Layout, Typography, Menu, Button, theme } from 'antd'
-import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
+import {
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  GithubOutlined,
+} from '@ant-design/icons'
 
 import { Props } from './types'
 
@@ -27,8 +31,12 @@ export default function CoreLayout({ children }: Props) {
 
   return (
     <Layout id="core-layout">
-      <Sider trigger={null} collapsible collapsed={collapsed}>
-        <div className="demo-logo-vertical" />
+      <Sider
+        className="menu-slider"
+        trigger={null}
+        collapsible
+        collapsed={collapsed}
+      >
         <Menu
           theme="dark"
           mode="inline"
@@ -36,6 +44,16 @@ export default function CoreLayout({ children }: Props) {
           items={MENU_ITEMS}
           onClick={({ key }) => onMenuClick(key)}
         />
+        <div id="github-button-wrapper">
+          <Button
+            icon={<GithubOutlined />}
+            type="primary"
+            href="https://github.com/theSinner/outlook-patch"
+            target="_blank"
+          >
+            {!collapsed && 'View in Github'}
+          </Button>
+        </div>
       </Sider>
       <Layout>
         <Header
