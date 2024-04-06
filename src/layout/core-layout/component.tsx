@@ -51,7 +51,7 @@ export default function CoreLayout({ children }: Props) {
             href="https://github.com/theSinner/outlook-patch"
             target="_blank"
           >
-            {!collapsed && 'View in Github'}
+            {!collapsed && 'View on Github'}
           </Button>
         </div>
       </Sider>

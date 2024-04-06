@@ -14,7 +14,6 @@
       display: flex;
       flex-direction: row;
       gap: getSize(300);
-
     }
   }
   .content-wrapper {
@@ -25,6 +24,18 @@
       flex-direction: column;
       align-items: stretch;
       gap: getSize(300);
+    }
+  }
+}
+
+@media screen and (width < 768px) {
+  #rule-list-page {
+    .header {
+      flex-direction: column;
+      align-items: flex-start;
+      .action-wrapper {
+        flex-wrap: wrap;
+      }
     }
   }
 }
