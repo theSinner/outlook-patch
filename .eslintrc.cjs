@@ -39,5 +39,6 @@ module.exports = {
     'no-await-in-loop': 0,
     'default-case': 1,
     'no-restricted-syntax': 1,
+    'no-param-reassign': 1,
   },
 }

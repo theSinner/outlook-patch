@@ -5,6 +5,7 @@ export interface MailContextData {
   mailFolders?: MailFolderExtended[]
   mailFoldersIDMap?: Record<string, MailFolderExtended>
   mailFoldersNameMap?: Record<string, string>
+  categories: string[]
 }
 
 export interface Props {

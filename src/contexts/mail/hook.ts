@@ -3,9 +3,11 @@ import { useState, useEffect, useContext } from 'react'
 import { AppContext } from '../app'
 import { getFolders } from './utils'
 import { MailFolderExtended } from './types'
+import { SettingsResource } from '../../network'
 
 export function useMail() {
   const { client } = useContext(AppContext)
+  const [categories, setCategories] = useState<string[]>()
   const [mailFolders, setMailFolders] = useState<MailFolderExtended[]>()
   const [mailFoldersIDMap, setMailFoldersIDMap] =
     useState<Record<string, MailFolderExtended>>()
@@ -19,6 +21,9 @@ export function useMail() {
         setMailFoldersIDMap(data.idMap)
         setMailFoldersNameMap(data.nameMap)
       })
+      SettingsResource.getCategories(client).then((newData) => {
+        setCategories(newData.map((category) => category.displayName!))
+      })
     }
   }, [])
 
@@ -26,5 +31,6 @@ export function useMail() {
     mailFolders,
     mailFoldersIDMap,
     mailFoldersNameMap,
+    categories,
   }
 }

@@ -1,12 +1,10 @@
 import { MessageRule } from '@microsoft/microsoft-graph-types'
-import { mergeWith, isArray } from 'lodash'
 import {
   MailContextData,
   MailFolderExtended,
   MailFolderExport,
 } from '../../contexts/mail/types'
 import { HIERARCHY_SPLITTER } from '../../constants'
-import { getNameID } from '../../utils'
 
 export function exportJSON(data: Record<string, unknown>) {
   const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
@@ -31,38 +29,62 @@ export function reorder<T>(
   return result
 }
 
-export function getFoldersHierarchy(
+function buildHierarchy(
   nameIDs: string[],
-  mailFoldersNameMap: Record<string, string>,
-  mailFoldersIDMap: Record<string, MailFolderExtended>
-): MailFolderExport {
-  if (nameIDs.length === 1) {
-    const folder = mailFoldersIDMap[mailFoldersNameMap[nameIDs[0]]]
-    return {
-      id: folder.nameID,
-      displayName: folder.displayName!,
-    }
+  map: Record<string, unknown>,
+  index: number = 0
+): Record<string, unknown> {
+  const id = nameIDs.slice(0, index + 1).join(HIERARCHY_SPLITTER)
+  if (!map[id]) {
+    map[id] = {}
   }
-  const folder = mailFoldersIDMap[mailFoldersNameMap[getNameID(nameIDs)]]
-  const parent = getFoldersHierarchy(
-    nameIDs.slice(0, 1),
-    mailFoldersNameMap,
-    mailFoldersIDMap
-  )
-  parent.children = [
-    {
-      id: folder.nameID,
-      displayName: folder.displayName!,
-    },
-  ]
-  return parent
+  if (index === nameIDs.length - 1) {
+    return map
+  }
+  return buildHierarchy(nameIDs, map[id] as Record<string, unknown>, index + 1)
 }
 
-function mergeCustomizer(objValue: unknown, srcValue: unknown) {
-  if (isArray(objValue)) {
-    return objValue.concat(srcValue)
+// eslint-disable-block consistent-return
+function buildMailFolderExport(
+  map: Record<string, unknown>,
+  mailFoldersNameMap: Record<string, string>,
+  mailFoldersIDMap: Record<string, MailFolderExtended>
+): MailFolderExport[] {
+  const folders: MailFolderExport[] = []
+  for (const id in map) {
+    if (mailFoldersNameMap.hasOwnProperty(id)) {
+      const folder: MailFolderExport = {
+        displayName: mailFoldersIDMap[mailFoldersNameMap[id]].displayName,
+        id,
+      }
+      if (
+        map[id] &&
+        Object.keys(map[id] as Record<string, unknown>).length > 0
+      ) {
+        folder.children = buildMailFolderExport(
+          map[id] as Record<string, string>,
+          mailFoldersNameMap,
+          mailFoldersIDMap
+        )
+      }
+      folders.push(folder)
+    }
   }
-  return undefined
+  return folders
+}
+
+function getFoldersHierarchy(
+  folderIds: string[],
+  mailFoldersNameMap: Record<string, string>,
+  mailFoldersIDMap: Record<string, MailFolderExtended>
+): MailFolderExport[] {
+  const map: Record<string, unknown> = {}
+  for (const folderId of folderIds) {
+    const nameIDs: string[] =
+      mailFoldersIDMap[folderId].nameID.split(HIERARCHY_SPLITTER)
+    buildHierarchy(nameIDs, map, 0)
+  }
+  return buildMailFolderExport(map, mailFoldersNameMap, mailFoldersIDMap) ?? []
 }
 
 export function exportRules(
@@ -71,7 +93,7 @@ export function exportRules(
 ) {
   const folderIds: string[] = []
   let categories: string[] = []
-  const foldersHierarchy: MailFolderExport[] = []
+  let foldersHierarchy: MailFolderExport[] = []
   for (const rule of rules) {
     delete rule.id
     if (rule.actions) {
@@ -95,23 +117,19 @@ export function exportRules(
     }
   }
   categories = [...new Set(categories)]
+
   if (
     mailContext.mailFoldersIDMap &&
     mailContext.mailFoldersNameMap &&
     folderIds.length > 0
   ) {
-    const hierarchies = []
-    for (const id of folderIds) {
-      hierarchies.push(
-        getFoldersHierarchy(
-          mailContext.mailFoldersIDMap[id].nameID.split(HIERARCHY_SPLITTER),
-          mailContext.mailFoldersNameMap,
-          mailContext.mailFoldersIDMap
-        )
-      )
-    }
-    mergeWith(foldersHierarchy, ...hierarchies, mergeCustomizer)
+    foldersHierarchy = getFoldersHierarchy(
+      folderIds,
+      mailContext.mailFoldersNameMap,
+      mailContext.mailFoldersIDMap
+    )
   }
+
   exportJSON({
     messageRules: rules,
     folders: foldersHierarchy,
