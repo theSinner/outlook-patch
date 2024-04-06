@@ -1,30 +1,21 @@
-# React + TypeScript + Vite
+<img src="public/logo.png" alt="Outlook Patch" style="width: 200px" />
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Outlook Patch
 
-Currently, two official plugins are available:
+Welcome to Outlook Patch! The purpose of this repository is to enhance the functionality of the Microsoft Outlook application.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- Import and export message rules
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- Drag-and-drop reordering of message rules 
 
-- Configure the top-level `parserOptions` property like this:
+## Contributing
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+Contributions from the community are welcome to make Outlook Patch even better!
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Acknowledgments
+
+- [Dragon Icons](https://www.flaticon.com/authors/dragon-icons) - For providing the logo used in this project.
+
+Feel free to create an [issue](https://github.com/theSinner/outlook-patch/issues) if you have any questions, suggestions, or feedback!
