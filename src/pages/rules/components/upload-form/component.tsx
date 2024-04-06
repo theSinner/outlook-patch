@@ -3,21 +3,22 @@ import { useContext, useEffect, useState } from 'react'
 import { Upload, message, Button } from 'antd'
 import { MessageRule } from '@microsoft/microsoft-graph-types'
 import { InboxOutlined } from '@ant-design/icons'
-import { Props } from './types'
+import { Props, UploadedData } from './types'
 
 import { AppContext } from '../../../../contexts/app/context'
 import { ItemStatusKind } from '../../../../components/item-status/types'
-import { SettingsResource } from '../../../../network'
 import { RuleItem } from '../rule-item'
-import { parseFile } from './utils'
+import { addCategories, addFolders, handleUpsertRule, parseFile } from './utils'
 
 import './component.scss'
+import { MailContext } from '../../../../contexts'
 
 const { Dragger } = Upload
 
 export default function UploadForm({ onClose, currentRules }: Props) {
   const { client } = useContext(AppContext)
-  const [rules, setRules] = useState<MessageRule[]>()
+  const mailContextData = useContext(MailContext)
+  const [uploadedData, setUploadedData] = useState<UploadedData>()
   const [currentRulesMap, setCurrentRulesMap] = useState<
     Record<string, MessageRule>
   >({})
@@ -40,27 +41,29 @@ export default function UploadForm({ onClose, currentRules }: Props) {
     setStatusMap((prevData) => ({ ...prevData, [index]: status }))
   }
 
-  const submitData = () => {
+  const submitData = async () => {
     if (isLoading || !client) {
       return
     }
     setIsLoading(true)
     const promises: Promise<void>[] = []
-    rules?.forEach((item, index) => {
+    const folderMap = {}
+    if (uploadedData?.categories) {
+      await addCategories(
+        client,
+        uploadedData?.categories,
+        mailContextData.categories
+      )
+    }
+    await addFolders(
+      client,
+      uploadedData?.folders ?? [],
+      mailContextData,
+      folderMap
+    )
+    uploadedData?.messageRules?.forEach((item, index) => {
       setItemStatus(index, 'loading')
-      const itemKey = item.displayName?.toLowerCase() ?? ''
-      let promise
-      if (!currentRulesMap.hasOwnProperty(itemKey)) {
-        promise = SettingsResource.createRule(client, item)
-        promises.push(promise)
-      } else {
-        promise = SettingsResource.updateRule(
-          client,
-          currentRulesMap[itemKey].id!,
-          item
-        )
-        promises.push(promise)
-      }
+      const promise = handleUpsertRule(client, currentRulesMap, item, folderMap)
       promise
         .then(() => {
           setItemStatus(index, 'success')
@@ -68,6 +71,7 @@ export default function UploadForm({ onClose, currentRules }: Props) {
         .catch(() => {
           setItemStatus(index, 'error')
         })
+      promises.push(promise)
     })
     Promise.all(promises)
       .then(() => {
@@ -83,7 +87,7 @@ export default function UploadForm({ onClose, currentRules }: Props) {
         fileList={[]}
         customRequest={({ file }) => {
           parseFile(file as Blob)
-            .then(setRules)
+            .then(setUploadedData)
             .catch((erroMessage) => {
               message.error(erroMessage)
             })
@@ -97,15 +101,19 @@ export default function UploadForm({ onClose, currentRules }: Props) {
         </p>
       </Dragger>
       <div className="list-wrapper">
-        {rules?.map((rule, index) => (
-          <RuleItem key={rule.id!} rule={rule} status={statusMap?.[index]} />
+        {uploadedData?.messageRules?.map((rule, index) => (
+          <RuleItem
+            key={rule.displayName}
+            rule={rule}
+            status={statusMap?.[index]}
+          />
         ))}
       </div>
       <div className="footer-wrapper">
         <Button
           loading={isLoading}
           type="primary"
-          disabled={!rules?.length}
+          disabled={!uploadedData?.messageRules?.length}
           onClick={submitData}
         >
           Submit

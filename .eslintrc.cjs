@@ -36,5 +36,9 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 1,
     'no-prototype-builtins': 0,
     'prefer-promise-reject-errors': 0,
+    'no-await-in-loop': 0,
+    'default-case': 1,
+    'no-restricted-syntax': 1,
+    'no-param-reassign': 1,
   },
 }
