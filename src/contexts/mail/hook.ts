@@ -31,6 +31,6 @@ export function useMail() {
     mailFolders,
     mailFoldersIDMap,
     mailFoldersNameMap,
-    categories,
+    categories: categories ?? [],
   }
 }
