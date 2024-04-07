@@ -6,6 +6,7 @@
   "files": [
     "dist/**/*"
   ],
+  "homepage": "https://outlook.ajorloo.com",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
