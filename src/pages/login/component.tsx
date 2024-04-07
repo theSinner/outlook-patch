@@ -18,7 +18,7 @@ export default function Login() {
             Outlook Patch
           </Title>
         </div>
-        <button className="login-button" onClick={signIn}>
+        <button type="button" className="login-button" onClick={signIn}>
           <img src="/sign-in.svg" alt="Sign in with Microsoft" />
         </button>
       </div>
