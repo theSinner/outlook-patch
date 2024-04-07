@@ -6,4 +6,56 @@
   width: 100vw;
   height: 100vh;
   background-color: #37474F;
+  .content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4rem;
+    .logo-wrapper {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      .logo {
+        height: 3rem;
+      }
+      .title {
+        margin: 0;
+        color: #ffffff;
+      }
+    }
+    .login-button {
+      display: contents;
+      img {
+        height: 2.5rem;
+        max-width: 90vw;
+        object-fit: contain;
+        object-position: center;
+        cursor: pointer;
+      }
+    }
+  }
+  #github-button-wrapper {
+    position: fixed;
+    bottom: 2rem;
+    left: 1rem;
+    padding-inline: 1rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media screen and (width < 480px) {
+  #login-page {
+    #github-button-wrapper {
+      bottom: 1rem;
+      left: 0rem;
+      width: 100%;
+      padding-inline: 1rem;
+    }
+  }
 }
