@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Layout, Typography, Menu, Button, theme } from 'antd'
 import {
@@ -6,16 +6,17 @@ import {
   MenuUnfoldOutlined,
   GithubOutlined,
 } from '@ant-design/icons'
-
+import { AppContext } from '../../contexts'
+import { MENU_ITEMS, MENU_URL_MAP } from './constants'
 import { Props } from './types'
 
 import './component.scss'
-import { MENU_ITEMS, MENU_URL_MAP } from './constants'
 
 const { Header, Sider, Content } = Layout
 const { Title } = Typography
 
 export default function CoreLayout({ children }: Props) {
+  const { signOut } = useContext(AppContext)
   const [collapsed, setCollapsed] = useState(false)
   const navigate = useNavigate()
 
@@ -74,6 +75,9 @@ export default function CoreLayout({ children }: Props) {
           <Title className="title" level={3}>
             Outlook Patch
           </Title>
+          <Button id="logout-button" onClick={signOut}>
+            Sign Out
+          </Button>
         </Header>
         <Content
           style={{

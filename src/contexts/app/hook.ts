@@ -79,7 +79,7 @@ export function useApp() {
   }
 
   const signOut = async () => {
-    await msal.instance.logoutPopup()
+    window.sessionStorage.clear()
     setUser(undefined)
   }
 
